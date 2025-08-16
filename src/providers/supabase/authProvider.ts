@@ -1,7 +1,7 @@
 import { supabaseAuthProvider } from 'ra-supabase';
 import { AuthProvider } from 'react-admin';
-import { supabase } from './supabase';
 import { canAccess } from '../commons/canAccess';
+import { supabase } from './supabase';
 
 const baseAuthProvider = supabaseAuthProvider(supabase, {
     getIdentity: async () => {
@@ -71,9 +71,10 @@ export const authProvider: AuthProvider = {
 
         if (!isInitialized) {
             await supabase.auth.signOut();
+            // Show the login page instead of forcing sign-up
             // eslint-disable-next-line no-throw-literal
             throw {
-                redirectTo: '/sign-up',
+                redirectTo: '/login',
                 message: false,
             };
         }

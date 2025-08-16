@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Button,
     CardActions,
@@ -7,11 +5,12 @@ import {
     CircularProgress,
     Typography,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { Form, useLogin, useNotify, useSafeSetState } from 'ra-core';
+import { ForgotPasswordPage } from 'ra-supabase';
 import { Login, TextInput } from 'react-admin';
 import { SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { ForgotPasswordPage } from 'ra-supabase';
 
 const PREFIX = 'RaLoginForm';
 
@@ -36,7 +35,7 @@ const StyledForm = styled(Form, {
     },
 }));
 
-export const LoginForm = () => {
+export const LoginForm = ({ isInitialized }: { isInitialized?: boolean }) => {
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const notify = useNotify();
@@ -113,6 +112,15 @@ export const LoginForm = () => {
                     >
                         Forgot your password?
                     </Typography>
+                    {!isInitialized && (
+                        <Typography
+                            component={Link}
+                            to="/sign-up"
+                            variant="caption"
+                        >
+                            Create initial user
+                        </Typography>
+                    )}
                 </CardActions>
             </StyledForm>
         </Login>

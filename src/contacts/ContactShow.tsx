@@ -1,18 +1,18 @@
-import * as React from 'react';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import {
-    ShowBase,
-    TextField,
     ReferenceField,
     ReferenceManyField,
+    ShowBase,
+    TextField,
     useShowContext,
 } from 'react-admin';
-import { Box, Card, CardContent, Typography } from '@mui/material';
 
-import { Avatar } from './Avatar';
-import { ContactAside } from './ContactAside';
+import PlaceIcon from '@mui/icons-material/Place';
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
 import { Contact } from '../types';
-import { CompanyAvatar } from '../companies/CompanyAvatar';
+import { Avatar } from './Avatar';
+import { ContactAside } from './ContactAside';
 
 export const ContactShow = () => (
     <ShowBase>
@@ -69,6 +69,58 @@ const ContactShowContent = () => {
                         >
                             <NotesIterator showStatus reference="contacts" />
                         </ReferenceManyField>
+                        <Box mt={2}>
+                            <Typography variant="subtitle2" gutterBottom>
+                                Addresses
+                            </Typography>
+                            {(record.service_address ||
+                                record.service_city ||
+                                record.service_state ||
+                                record.service_zipcode) && (
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                    mb={1}
+                                >
+                                    <PlaceIcon
+                                        fontSize="small"
+                                        color="disabled"
+                                    />
+                                    <Typography variant="body2">
+                                        {[
+                                            record.service_address,
+                                            record.service_city,
+                                            record.service_state,
+                                            record.service_zipcode,
+                                        ]
+                                            .filter(Boolean)
+                                            .join(', ')}
+                                    </Typography>
+                                </Box>
+                            )}
+                            {(record.billing_address ||
+                                record.billing_city ||
+                                record.billing_state ||
+                                record.billing_zipcode) && (
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <PlaceIcon
+                                        fontSize="small"
+                                        color="disabled"
+                                    />
+                                    <Typography variant="body2">
+                                        {[
+                                            record.billing_address,
+                                            record.billing_city,
+                                            record.billing_state,
+                                            record.billing_zipcode,
+                                        ]
+                                            .filter(Boolean)
+                                            .join(', ')}
+                                    </Typography>
+                                </Box>
+                            )}
+                        </Box>
                     </CardContent>
                 </Card>
             </Box>

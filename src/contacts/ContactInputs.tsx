@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     Divider,
     Stack,
@@ -6,6 +5,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
+import * as React from 'react';
 import {
     ArrayInput,
     AutocompleteInput,
@@ -23,6 +23,7 @@ import {
 } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
 
+import { AddressAutocompleteInput } from '../misc/AddressAutocompleteInput';
 import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
@@ -46,6 +47,7 @@ export const ContactInputs = () => {
                 />
                 <Stack gap={4} flex={5}>
                     <ContactPersonalInformationInputs />
+                    <ContactAddressInputs />
                     <ContactMiscInputs />
                 </Stack>
             </Stack>
@@ -147,6 +149,18 @@ const ContactPersonalInformationInputs = () => {
         handleEmailChange(email);
     };
 
+    const formatPhoneForDisplay = (value?: string) => {
+        const digits = (value || '').replace(/\D/g, '').slice(0, 10);
+        if (digits.length <= 3) return digits;
+        if (digits.length <= 6)
+            return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+        return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+    };
+
+    const parsePhoneForSave = (value?: string) => {
+        return (value || '').replace(/\D/g, '').slice(0, 10);
+    };
+
     return (
         <Stack>
             <Typography variant="h6">Personal info</Typography>
@@ -180,7 +194,13 @@ const ContactPersonalInformationInputs = () => {
                 helperText={false}
             >
                 <SimpleFormIterator inline disableReordering>
-                    <TextInput source="number" helperText={false} />
+                    <TextInput
+                        source="number"
+                        helperText={false}
+                        format={formatPhoneForDisplay}
+                        parse={parsePhoneForSave}
+                        inputProps={{ inputMode: 'numeric' }}
+                    />
                     <SelectInput
                         source="type"
                         helperText={false}
@@ -236,3 +256,69 @@ const ContactMiscInputs = () => {
 
 const saleOptionRenderer = (choice: Sale) =>
     `${choice.first_name} ${choice.last_name}`;
+
+const ContactAddressInputs = () => {
+    return (
+        <Stack>
+            <Typography variant="h6">Addresses</Typography>
+            <Typography variant="subtitle2">Service address</Typography>
+            <AddressAutocompleteInput
+                source="service_address"
+                label="Address"
+                citySource="service_city"
+                stateSource="service_state"
+                zipSource="service_zipcode"
+                helperText={false}
+            />
+            <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
+                <TextInput
+                    source="service_city"
+                    label="City"
+                    helperText={false}
+                />
+                <TextInput
+                    source="service_state"
+                    label="State"
+                    helperText={false}
+                    sx={{ maxWidth: 120 }}
+                />
+                <TextInput
+                    source="service_zipcode"
+                    label="Zip code"
+                    helperText={false}
+                    sx={{ maxWidth: 160 }}
+                />
+            </Stack>
+            <Typography variant="subtitle2" mt={2}>
+                Billing address (if different)
+            </Typography>
+            <AddressAutocompleteInput
+                source="billing_address"
+                label="Address"
+                citySource="billing_city"
+                stateSource="billing_state"
+                zipSource="billing_zipcode"
+                helperText={false}
+            />
+            <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
+                <TextInput
+                    source="billing_city"
+                    label="City"
+                    helperText={false}
+                />
+                <TextInput
+                    source="billing_state"
+                    label="State"
+                    helperText={false}
+                    sx={{ maxWidth: 120 }}
+                />
+                <TextInput
+                    source="billing_zipcode"
+                    label="Zip code"
+                    helperText={false}
+                    sx={{ maxWidth: 160 }}
+                />
+            </Stack>
+        </Stack>
+    );
+};

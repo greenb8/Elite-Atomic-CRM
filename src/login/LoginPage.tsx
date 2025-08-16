@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useDataProvider } from 'react-admin';
-import { Navigate } from 'react-router-dom';
 import { CrmDataProvider } from '../providers/types';
 import { LoginForm } from './LoginForm';
 import { LoginSkeleton } from './LoginSkeleton';
@@ -19,8 +18,5 @@ export const LoginPage = () => {
     });
 
     if (isPending) return <LoginSkeleton />;
-    if (error) return <LoginForm />;
-    if (isInitialized) return <LoginForm />;
-
-    return <Navigate to="/sign-up" />;
+    return <LoginForm isInitialized={isInitialized} />;
 };

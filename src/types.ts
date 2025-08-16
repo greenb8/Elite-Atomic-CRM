@@ -97,6 +97,14 @@ export type Contact = {
     status: string;
     background: string;
     phone_jsonb: PhoneNumberAndType[];
+    service_address?: string | null;
+    service_city?: string | null;
+    service_state?: string | null;
+    service_zipcode?: string | null;
+    billing_address?: string | null;
+    billing_city?: string | null;
+    billing_state?: string | null;
+    billing_zipcode?: string | null;
 
     nb_tasks?: number;
     company_name?: string;
