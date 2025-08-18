@@ -67,8 +67,9 @@ export const LineItemsInput = () => {
 		return () => clearTimeout(id);
 	}, [search, searchProducts]);
 
-	(React as any).__LINE_ITEMS_TOTAL__ = total;
-	(React as any).__LINE_ITEMS_ITEMS__ = items;
+	// expose computed values to parent form logic
+	(globalThis as any).__LINE_ITEMS_TOTAL__ = total;
+	(globalThis as any).__LINE_ITEMS_ITEMS__ = items;
 
 	return (
 		<Stack gap={2}>

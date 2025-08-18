@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
-import { RecordContextProvider, useListContext, useRedirect } from 'react-admin';
+import { RecordContextProvider, useListContext, useRedirect, useRecordContext } from 'react-admin';
 
 export type Product = {
 	id: number;
@@ -23,7 +23,7 @@ const LoadingGridList = () => (
 
 const ProductCard = () => {
 	const redirect = useRedirect();
-	const record = React.useContext(RecordContextProvider.Context) as Product | undefined;
+	const record = useRecordContext<Product>();
 	if (!record) return null;
 	const firstPhoto = Array.isArray(record.photos_paths) && record.photos_paths.length > 0 ? record.photos_paths[0] : undefined;
 	return (
