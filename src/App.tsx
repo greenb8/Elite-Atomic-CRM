@@ -25,6 +25,6 @@ import { CRM } from './root/CRM';
  *    />
  * );
  */
-const App = () => <CRM />;
+const App = () => <CRM title="Elite Atomic CRM" />;
 
 export default App;

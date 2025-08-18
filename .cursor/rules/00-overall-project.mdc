@@ -1,0 +1,47 @@
+---
+description: "The mission, core principles, and high-level architecture for Elite-Atomic-CRM."
+globs: ["*"]
+alwaysApply: true
+---
+
+# Elite-Atomic-CRM: Project Charter
+
+This document defines the mission, core principles, and high-level architecture for the Elite-Atomic-CRM project. It is the single source of truth for all strategic and technical decisions.
+
+## 1. Project Mission & Vision
+
+**Our mission is to empower landscaping and lawn care businesses with a CRM that feels custom-built for their unique workflows.** We will transform the generic "Atomic CRM" into a specialized, professional, and delightful tool that helps our users manage their clients, jobs, and properties with clarity, confidence, and control.
+
+## 2. Core Principles
+
+Our development is guided by the philosophy of the React-Admin framework, which we adopt as our own.
+
+-   **User Experience is King**: Every feature and design choice must prioritize the end user—the landscaping professional. The UI must be intuitive, efficient, and visually polished. We start with React-Admin's "purposefully bland" interface and elevate it into a world-class experience.
+-   **Developer Experience Matters**: A productive and empowered developer builds better software. We will leverage React-Admin's abstractions and our own clear patterns to ensure the codebase is a pleasure to work in.
+-   **"Batteries Included, But Removable"**: This is our core architectural philosophy. We will always use React-Admin's built-in components and hooks first. However, when a default solution is not sufficient to provide a superior, domain-specific user experience, we will **not hesitate** to build and use a custom component. The custom `@src/contacts/ContactShow.tsx` is a prime example of this principle in action.
+
+## 3. Core Technologies
+
+Our technology stack is chosen to maximize quality and development velocity.
+
+-   **Frontend**: React, React-Admin, Vite, Material-UI (MUI) v5.
+-   **Animation**: Framer Motion is the designated library for all UI animations.
+-   **Backend**: Supabase (PostgreSQL, Authentication, Edge Functions).
+-   **Language**: TypeScript.
+
+## 4. Key Architectural Patterns
+
+-   **Centralized Customization**: The primary entry point for customization is the `<CRM>` component. All domain-specific data (like job stages and categories) is passed as props here.
+    -   **Reference File**: `@src/App.tsx`
+-   **Database Views**: To simplify complex data fetching on the frontend, we use PostgreSQL views defined in `@supabase/migrations/`. This keeps the frontend logic clean and performant.
+-   **Database Triggers**: Used for data synchronization, for example, between `auth.users` and our custom `sales` table.
+    -   **Reference File**: `@supabase/migrations/20240730075425_init_triggers.sql`
+
+## 5. General Coding Standards
+
+-   Follow the existing code style.
+-   Use Prettier and ESLint for code formatting and linting. Run `npm run lint:apply` and `npm run prettier:apply` before committing.
+-   All new features should be accompanied by tests.
+-   Follow the existing code style.
+-   Use Prettier and ESLint for code formatting and linting. Run `npm run lint:apply` and `npm run prettier:apply` before committing.
+-   All new features should be accompanied by tests.

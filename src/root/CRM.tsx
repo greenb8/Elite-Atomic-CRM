@@ -10,6 +10,7 @@ import {
 } from 'react-admin';
 import type { AdminProps, AuthProvider, DataProvider } from 'react-admin';
 import { deepmerge } from '@mui/utils';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { Route } from 'react-router';
 import { ForgotPasswordPage, SetPasswordPage } from 'ra-supabase';
 
@@ -26,6 +27,7 @@ import {
     dataProvider as defaultDataProvider,
 } from '../providers/supabase';
 import sales from '../sales';
+import * as products from '../products';
 import { SettingsPage } from '../settings/SettingsPage';
 import {
     ConfigurationContextValue,
@@ -197,6 +199,7 @@ export const CRM = ({
                 <Resource name="tasks" list={ListGuesser} />
                 <Resource name="sales" {...sales} />
                 <Resource name="tags" list={ListGuesser} />
+                <Resource name="products" {...products} icon={InventoryIcon} />
             </Admin>
         </ConfigurationProvider>
     );

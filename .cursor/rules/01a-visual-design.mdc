@@ -1,0 +1,170 @@
+---
+alwaysApply: true
+---
+# Visual Design & Theming Guide
+
+This rule defines the visual identity and interaction principles for Elite-Atomic-CRM. Apply it to all frontend work to ensure a consistent, professional, and brand-aligned UI.
+
+References: React-Admin prioritizes UX and builds on Material UI; keep aesthetics consistent and intentional ([React-Admin UX](https://marmelab.com/react-admin/doc/5.8/Contributing.html)). Material UI is a customizable foundation; implement branding via theme ([MUI Vision](https://mui.com/material-ui/discover-more/vision/)).
+
+## 1) Brand Color System
+
+- **Primary (Elite Navy)**: `#0A2243`
+  - Use for primary actions, AppBar, selected states, key icons.
+- **Accent (Action Gold)**: `#FCBB1C`
+  - Use for primary call-to-action buttons, highlights, badges, focus rings.
+- **Base (White)**: `#FFFFFF`
+  - Use for page background, cards, and surfaces.
+- **Greys (for text and dividers)**: from MUI grey scale
+  - Text primary: `grey[900]` (`#212121`)
+  - Text secondary: `grey[600]` (`#757575`)
+  - Divider: `grey[200]` (`#EEEEEE`)
+
+Rules:
+- Never hardcode hex colors in components. Always use `theme.palette.*` tokens.
+- Ensure WCAG AA contrast (>= 4.5:1 for text) ([MUI Color & Accessibility](https://mui.com/material-ui/customization/color/)).
+
+## 2) Typography System
+
+- **Headings**: Montserrat (700 for h1–h2, 600 for h3–h4, 500 for h5–h6)
+- **Body & UI**: Raleway (400 body1/body2, 500 for labels)
+- Fallbacks: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`
+
+Implementation:
+- Load fonts via app shell (e.g., `index.html` or CSS import). Keep to two weights per family to optimize performance.
+- Use MUI typography variants; never inline arbitrary font sizes.
+
+## 3) Elevation, Surfaces, and Density
+
+- Prefer subtle depth to separate surfaces; keep shadows soft and realistic.
+- Elevation map (MUI shadow levels):
+  - Cards, panels: `theme.shadows[2]`
+  - Menus, popovers: `theme.shadows[8]`
+  - Dialogs, drawers: `theme.shadows[16]`
+- Increase elevation on hover for interactive surfaces (buttons, cards) to signal interactivity.
+
+## 4) Motion & Interaction (Framer Motion)
+
+Use motion to communicate state and direction—not as decoration.
+
+- Library: Framer Motion for transitions and feedback ([Motion rules](https://motion.dev/docs/ai-llm-rules)).
+- Timing:
+  - Micro-interactions (hover/press): 120–180ms
+  - UI transitions (open/close, list add/remove): 180–240ms
+  - Page transitions: 240–320ms
+- Easing:
+  - Enter: `cubic-bezier(0.2, 0.8, 0.2, 1)` (easeOut)
+  - Exit: `cubic-bezier(0.4, 0.0, 1, 1)` (easeIn)
+- Performance:
+  - Animate `transform` and `opacity` only.
+  - Use `will-change: transform` for complex animations.
+- Accessibility:
+  - Respect `prefers-reduced-motion`; disable non-essential animations.
+
+Examples:
+
+```tsx
+// Page transition wrapper
+import { MotionConfig, m } from 'framer-motion';
+
+export const Page = ({ children }: { children: React.ReactNode }) => (
+  <MotionConfig reducedMotion="user">
+    <m.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.24, ease: [0.2, 0.8, 0.2, 1] }}
+    >
+      {children}
+    </m.div>
+  </MotionConfig>
+);
+```
+
+## 5) Component Styling Guidelines
+
+- **Buttons**:
+  - Primary: `color="primary"`, contained; background uses `#0A2243`; focus/hover adds elevation and slight scale (1.01) via transform.
+  - Secondary: outlined; border uses `primary.main` at 24% alpha; hover fills with very light primary tint.
+  - Destructive: use `error` from theme; never use custom reds.
+
+- **AppBar & Navigation**:
+  - AppBar uses `primary.main` background; text/icons are white.
+  - Active nav item highlighted with `#FCBB1C` accent bar/badge.
+
+- **Cards & Panels**:
+  - Use `paper` background, `shadows[2]`, 12–16px radius, generous internal spacing.
+
+- **Forms**:
+  - Label weight 500 (Raleway), helper text secondary color.
+  - Use consistent vertical rhythm: 16–24px between fields.
+  - Show inline validation states; avoid full-page modals for simple errors.
+
+- **DataGrid / Lists**:
+  - Dense by default; use zebra striping via `action.hover` or subtle background.
+  - Sticky header with slight shadow when scrolled.
+
+## 6) Theme Implementation (Single Source of Truth)
+
+All theme customization is centralized and passed to `<CRM>`.
+
+See `@doc/developer/theming.md` and implement in `@src/App.tsx`.
+
+```tsx
+// src/App.tsx (excerpt)
+import { createTheme } from '@mui/material/styles';
+import { CRM } from './root/CRM';
+
+const eliteTheme = createTheme({
+  palette: {
+    primary: { main: '#0A2243', contrastText: '#FFFFFF' },
+    secondary: { main: '#FCBB1C', contrastText: '#0A2243' },
+    background: { default: '#FFFFFF', paper: '#FFFFFF' },
+    text: { primary: '#212121', secondary: '#757575' },
+  },
+  typography: {
+    fontFamily: 'Raleway, Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    h1: { fontFamily: 'Montserrat', fontWeight: 700 },
+    h2: { fontFamily: 'Montserrat', fontWeight: 700 },
+    h3: { fontFamily: 'Montserrat', fontWeight: 600 },
+    h4: { fontFamily: 'Montserrat', fontWeight: 600 },
+    h5: { fontFamily: 'Montserrat', fontWeight: 500 },
+    h6: { fontFamily: 'Montserrat', fontWeight: 500 },
+    button: { textTransform: 'none', fontWeight: 600 },
+  },
+  shape: { borderRadius: 12 },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: { boxShadow: 'none' },
+        containedPrimary: { boxShadow: '0 2px 8px rgba(10,34,67,0.24)' },
+      },
+    },
+    MuiPaper: { styleOverrides: { elevation1: { boxShadow: '0 4px 12px rgba(10,34,67,0.10)' } } },
+  },
+});
+
+export default function App() {
+  return <CRM lightTheme={eliteTheme} darkTheme={eliteTheme} />;
+}
+```
+
+## 7) Do / Don’t
+
+- Do use `sx` and theme tokens; don’t hardcode colors/sizes.
+- Do animate with `transform`/`opacity`; don’t animate layout properties.
+- Do provide visible focus states; don’t remove outlines without a replacement.
+- Do respect reduced motion; don’t force large/looping animations.
+
+## 8) Accessibility & Quality
+
+- Minimum contrast AA for text ([WCAG 2.1](https://mui.com/material-ui/customization/color/)).
+- Keyboard navigable controls; visible focus ring (use accent `#FCBB1C` at 2–3px outline when appropriate).
+- Avoid layout shift; reserve space for async content, animate opacity/transform only.
+
+## 9) Additional References
+
+- React-Admin Architecture & UX: [link](https://marmelab.com/react-admin/doc/5.8/Architecture.html), [link](https://marmelab.com/react-admin/doc/5.8/Contributing.html)
+- Material UI Customization & Color: [link](https://mui.com/material-ui/customization/color/)
+- Motion best practices: [link](https://motion.dev/docs/ai-llm-rules)
+
