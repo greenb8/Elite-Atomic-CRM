@@ -11,8 +11,11 @@ import {
     FilterListItem,
     useListFilterContext,
 } from 'react-admin';
-import { Box, Chip } from '@mui/material';
+import { Box, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import { ProductGrid } from './ProductGrid';
 
 const productFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -23,31 +26,18 @@ const productFilters = [
 const VendorFilterList = () => {
     const { filterValues, setFilters } = useListFilterContext();
 
-    const handleClick = (vendor: string) => {
-        const newFilterValues = { ...filterValues, vendor };
-        setFilters(newFilterValues, {});
-    };
-
     return (
         <FilterList label="Vendor" icon={<InventoryIcon />}>
-            <FilterListItem
-                label="All"
-                value={{ vendor: undefined }}
-            />
-            <FilterListItem
-                label="Vendor A"
-                value={{ vendor: 'Vendor A' }}
-            />
-            <FilterListItem
-                label="Vendor B"
-                value={{ vendor: 'Vendor B' }}
-            />
-            {/* Add more vendors as needed */}
+            <FilterListItem label="All" value={{ vendor: undefined }} />
+            {/* Example static filters; consider replacing with dynamic list later */}
+            <FilterListItem label="Vendor A" value={{ vendor: 'Vendor A' }} />
+            <FilterListItem label="Vendor B" value={{ vendor: 'Vendor B' }} />
         </FilterList>
     );
 };
 
 const ProductList = () => {
+    const [view, setView] = React.useState<'table' | 'grid'>('grid');
     return (
         <List
             filters={productFilters}
@@ -57,16 +47,37 @@ const ProductList = () => {
                     <VendorFilterList />
                 </Box>
             }
+            actions={
+                <Stack direction="row" alignItems="center" gap={1} sx={{ p: 1 }}>
+                    <ToggleButtonGroup
+                        value={view}
+                        exclusive
+                        onChange={(_, v) => v && setView(v)}
+                        size="small"
+                    >
+                        <ToggleButton value="grid">
+                            <ViewModuleIcon fontSize="small" />
+                        </ToggleButton>
+                        <ToggleButton value="table">
+                            <TableRowsIcon fontSize="small" />
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </Stack>
+            }
         >
-            <Datagrid rowClick="show">
-                <TextField source="name" />
-                <TextField source="vendor" />
-                <TextField source="size" />
-                <NumberField source="quantity_on_hand" label="In Stock" />
-                <NumberField source="cost" options={{ style: 'currency', currency: 'USD' }} />
-                <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
-                <EditButton />
-            </Datagrid>
+            {view === 'table' ? (
+                <Datagrid rowClick="show">
+                    <TextField source="name" />
+                    <TextField source="vendor" />
+                    <TextField source="size" />
+                    <NumberField source="quantity_on_hand" label="In Stock" />
+                    <NumberField source="cost" options={{ style: 'currency', currency: 'USD' }} />
+                    <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
+                    <EditButton />
+                </Datagrid>
+            ) : (
+                <ProductGrid />
+            )}
         </List>
     );
 };

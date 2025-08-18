@@ -7,6 +7,7 @@ import { Welcome } from './Welcome';
 import { useGetList } from 'react-admin';
 import { Contact, ContactNote } from '../types';
 import { DashboardStepper } from './DashboardStepper';
+import { LowStockProducts } from './LowStockProducts';
 
 export const Dashboard = () => {
     const {
@@ -52,6 +53,7 @@ export const Dashboard = () => {
                         <Welcome />
                     ) : null}
                     <HotContacts />
+                    <LowStockProducts />
                 </Stack>
             </Grid>
             <Grid item xs={12} md={6}>
