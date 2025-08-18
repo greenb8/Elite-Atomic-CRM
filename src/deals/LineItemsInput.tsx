@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Box, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Box, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { useDataProvider, useNotify, useRecordContext, useWatch } from 'react-admin';
+import { useDataProvider, useNotify } from 'react-admin';
 
 export type LineItem = {
 	product_id?: number | null;
@@ -17,14 +17,15 @@ export const LineItemsInput = () => {
 	const notify = useNotify();
 	const dataProvider = useDataProvider();
 	const [items, setItems] = React.useState<LineItem[]>([]);
-	const [query, setQuery] = React.useState('');
+	const [search, setSearch] = React.useState('');
+	const [suggestions, setSuggestions] = React.useState<any[]>([]);
 
 	const total = items.reduce((sum, it) => sum + (Number(it.price || 0) * Number(it.quantity || 0)), 0);
 
 	const addEmpty = () => setItems(prev => [...prev, { name: '', price: 0, quantity: 1 }]);
 	const removeAt = (index: number) => setItems(prev => prev.filter((_, i) => i !== index));
 
-	const handleSearchSelect = async (index: number, productId: number) => {
+	const handlePickProduct = async (index: number, productId: number) => {
 		try {
 			const product = await dataProvider.getOne('products', { id: productId });
 			const p = product.data as any;
@@ -42,7 +43,30 @@ export const LineItemsInput = () => {
 		}
 	};
 
-	// Expose total amount in a hidden input via DOM-less mechanism: parent DealInputs will read via callback
+	const searchProducts = React.useCallback(async (q: string) => {
+		try {
+			const res = await dataProvider.getList('products', {
+				pagination: { page: 1, perPage: 5 },
+				sort: { field: 'name', order: 'ASC' },
+				filter: { 'name@ilike': q },
+			});
+			setSuggestions(res.data as any[]);
+		} catch {
+			setSuggestions([]);
+		}
+	}, [dataProvider]);
+
+	React.useEffect(() => {
+		const id = setTimeout(() => {
+			if (search && search.length >= 2) {
+				searchProducts(`%${search}%`);
+			} else {
+				setSuggestions([]);
+			}
+		}, 250);
+		return () => clearTimeout(id);
+	}, [search, searchProducts]);
+
 	(React as any).__LINE_ITEMS_TOTAL__ = total;
 	(React as any).__LINE_ITEMS_ITEMS__ = items;
 
@@ -57,9 +81,22 @@ export const LineItemsInput = () => {
 					<TextField
 						label="Product or Name"
 						value={item.name}
-						onChange={e => setItems(prev => prev.map((it, i) => i === index ? { ...it, name: e.target.value } : it))}
+						onChange={e => {
+							setItems(prev => prev.map((it, i) => i === index ? { ...it, name: e.target.value } : it));
+							setSearch(e.target.value);
+						}}
 						size="small"
-					/>
+						select={suggestions.length > 0}
+						SelectProps={{
+							native: false,
+						}}
+					>
+						{suggestions.map(s => (
+							<MenuItem key={s.id} value={s.name} onClick={() => handlePickProduct(index, s.id)}>
+								{s.name}
+							</MenuItem>
+						))}
+					</TextField>
 					<TextField
 						label="Price"
 						type="number"

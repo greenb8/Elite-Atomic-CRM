@@ -200,6 +200,7 @@ export const CRM = ({
                 <Resource name="sales" {...sales} />
                 <Resource name="tags" list={ListGuesser} />
                 <Resource name="products" {...products} icon={InventoryIcon} />
+                <Resource name="deal_line_items" list={ListGuesser} />
             </Admin>
         </ConfigurationProvider>
     );

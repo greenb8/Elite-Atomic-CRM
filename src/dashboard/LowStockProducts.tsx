@@ -6,7 +6,7 @@ export const LowStockProducts = ({ threshold = 10 }: { threshold?: number }) => 
 	const redirect = useRedirect();
 	const { data, isPending } = useGetList('products', {
 		pagination: { page: 1, perPage: 10 },
-		filter: { quantity_on_hand_lte: threshold },
+		filter: { 'quantity_on_hand@lte': threshold },
 		sort: { field: 'quantity_on_hand', order: 'ASC' },
 	});
 
