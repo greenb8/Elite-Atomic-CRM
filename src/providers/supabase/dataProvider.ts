@@ -90,6 +90,9 @@ const dataProviderWithCustomMethods = {
         if (resource === 'contacts') {
             return baseDataProvider.getList('contacts_summary', params);
         }
+        if (resource === 'properties') {
+            return baseDataProvider.getList('properties_summary', params);
+        }
 
         return baseDataProvider.getList(resource, params);
     },
@@ -99,6 +102,9 @@ const dataProviderWithCustomMethods = {
         }
         if (resource === 'contacts') {
             return baseDataProvider.getOne('contacts_summary', params);
+        }
+        if (resource === 'properties') {
+            return baseDataProvider.getOne('properties_summary', params);
         }
 
         return baseDataProvider.getOne(resource, params);
