@@ -28,6 +28,7 @@ import {
 } from '../providers/supabase';
 import sales from '../sales';
 import * as products from '../products';
+import properties from '../properties';
 import { SettingsPage } from '../settings/SettingsPage';
 import {
     ConfigurationContextValue,
@@ -201,6 +202,7 @@ export const CRM = ({
                 <Resource name="tags" list={ListGuesser} />
                 <Resource name="products" {...products} icon={InventoryIcon} />
                 <Resource name="deal_line_items" list={ListGuesser} />
+                <Resource name="properties" {...properties} />
             </Admin>
         </ConfigurationProvider>
     );

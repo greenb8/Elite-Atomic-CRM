@@ -122,8 +122,8 @@ group by p.id, contact_name;
 ```
 
 2.3 Apply migrations
-- Local: `npx supabase migration up`
 - Remote (MCP or CLI as per `/doc/developer/migrations.md`).
+- npx supabase db push
 
 Acceptance Criteria (DB):
 - Table `public.properties` exists with RLS enabled and CRUD grants for `authenticated`.
