@@ -12,6 +12,7 @@ import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
 import { Contact } from '../types';
 import { Avatar } from './Avatar';
+import StreetViewImage from '../misc/StreetViewImage';
 import { ContactAside } from './ContactAside';
 
 export const ContactShow = () => (
@@ -97,6 +98,21 @@ const ContactShowContent = () => {
                                             .filter(Boolean)
                                             .join(', ')}
                                     </Typography>
+                                </Box>
+                            )}
+                            {record.service_address && (
+                                <Box mt={2}>
+                                    <Typography variant="subtitle2" gutterBottom>
+                                        Service Location Street View
+                                    </Typography>
+                                    <StreetViewImage
+                                        address={record.service_address}
+                                        city={record.service_city}
+                                        state={record.service_state}
+                                        zipcode={record.service_zipcode}
+                                        size={{ width: 400, height: 250 }}
+                                        fov={80}
+                                    />
                                 </Box>
                             )}
                             {(record.billing_address ||

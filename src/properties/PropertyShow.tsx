@@ -12,11 +12,30 @@ import {
     SingleFieldList
 } from 'react-admin';
 import { Box, Typography, Divider } from '@mui/material';
+import StreetViewImage from '../misc/StreetViewImage';
+import { useRecordContext } from 'react-admin';
 
 export default function PropertyShow() {
+	const record = useRecordContext<any>();
 	return (
 		<Show>
 			<SimpleShowLayout>
+				{record?.address ? (
+					<>
+						<Typography variant="h6" gutterBottom>Street View</Typography>
+						<StreetViewImage
+							address={record.address}
+							city={record.city}
+							state={record.state}
+							zipcode={record.zipcode}
+							size={{ width: 600, height: 400 }}
+							fov={90}
+							heading={0}
+							pitch={0}
+						/>
+						<Divider sx={{ my: 2 }} />
+					</>
+				) : null}
 				<TextField source="name" />
 				<TextField source="contact_name" label="Contact" />
 				<TextField source="address" />
