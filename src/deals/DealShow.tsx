@@ -114,6 +114,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     <>
                                         <ArchiveButton record={record} />
                                         <EditButton scrollToTop={false} />
+                                        <CreateJobButton />
                                     </>
                                 )}
                             </Stack>
@@ -346,6 +347,33 @@ const UnarchiveButton = ({ record }: { record: Deal }) => {
             size="small"
         >
             Send back to the board
+        </Button>
+    );
+};
+
+const CreateJobButton = () => {
+    const record = useRecordContext<Deal>();
+    const redirect = useRedirect();
+    if (!record) return null;
+
+    // Only show when deal is in a "won" state; adjust if your stage id differs
+    const isWon = String(record.stage).toLowerCase().includes('won');
+    if (!isWon) return null;
+
+    const handleClick = () => {
+        redirect('/jobs/create', {
+            state: {
+                record: {
+                    deal_id: record.id,
+                    property_id: (record as any).property_id,
+                },
+            },
+        });
+    };
+
+    return (
+        <Button onClick={handleClick} size="small">
+            Create Job
         </Button>
     );
 };

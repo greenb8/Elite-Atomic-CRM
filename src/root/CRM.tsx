@@ -29,6 +29,7 @@ import {
 import sales from '../sales';
 import * as products from '../products';
 import properties from '../properties';
+import * as jobs from '../jobs';
 import { SettingsPage } from '../settings/SettingsPage';
 import {
     ConfigurationContextValue,
@@ -203,6 +204,7 @@ export const CRM = ({
                 <Resource name="products" {...products} icon={InventoryIcon} />
                 <Resource name="deal_line_items" list={ListGuesser} />
                 <Resource name="properties" {...properties} />
+                <Resource name="jobs" {...jobs} />
             </Admin>
         </ConfigurationProvider>
     );
