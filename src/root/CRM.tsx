@@ -11,6 +11,7 @@ import {
 import type { AdminProps, AuthProvider, DataProvider } from 'react-admin';
 import { deepmerge } from '@mui/utils';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Route } from 'react-router';
 import { ForgotPasswordPage, SetPasswordPage } from 'ra-supabase';
 
@@ -204,7 +205,7 @@ export const CRM = ({
                 <Resource name="products" {...products} icon={InventoryIcon} />
                 <Resource name="deal_line_items" list={ListGuesser} />
                 <Resource name="properties" {...properties} />
-                <Resource name="jobs" {...jobs} />
+                <Resource name="jobs" {...jobs} icon={CalendarMonthIcon} />
             </Admin>
         </ConfigurationProvider>
     );
