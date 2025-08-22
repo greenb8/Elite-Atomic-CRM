@@ -1,6 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Card, CardMedia, IconButton, Skeleton, Typography } from '@mui/material';
-import { Refresh as RefreshIcon, Fullscreen as FullscreenIcon } from '@mui/icons-material';
+import {
+    Box,
+    Card,
+    CardMedia,
+    IconButton,
+    Skeleton,
+    Typography,
+} from '@mui/material';
+import {
+    Refresh as RefreshIcon,
+    Fullscreen as FullscreenIcon,
+} from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
 type StreetViewImageProps = {
@@ -33,10 +43,14 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
     const [hasError, setHasError] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
 
-    const fullAddress = [address, city, state, zipcode].filter(Boolean).join(', ');
+    const fullAddress = [address, city, state, zipcode]
+        .filter(Boolean)
+        .join(', ');
 
     const streetViewUrl = useMemo(() => {
-        const apiKey = import.meta.env.VITE_GOOGLE_API_KEY as string | undefined;
+        const apiKey = import.meta.env.VITE_GOOGLE_API_KEY as
+            | string
+            | undefined;
         if (!fullAddress || !apiKey) return null;
         const params = new URLSearchParams({
             size: `${size.width}x${size.height}`,
@@ -69,13 +83,32 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
 
     if (!streetViewUrl) {
         return (
-            <Card className={className} sx={{ bgcolor: theme.palette.action.hover, borderRadius: theme.shape.borderRadius }}>
-                <Box sx={{ height: size.height, display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
-                    <Typography variant="body2" color="text.secondary" textAlign="center">
+            <Card
+                className={className}
+                sx={{
+                    bgcolor: theme.palette.action.hover,
+                    borderRadius: theme.shape.borderRadius,
+                }}
+            >
+                <Box
+                    sx={{
+                        height: size.height,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        p: 2,
+                    }}
+                >
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        textAlign="center"
+                    >
                         Street View not available
                         {!import.meta.env.VITE_GOOGLE_API_KEY && (
                             <>
-                                <br />Google API key not configured
+                                <br />
+                                Google API key not configured
                             </>
                         )}
                     </Typography>
@@ -91,7 +124,8 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
                 position: 'relative',
                 boxShadow: theme.shadows[2],
                 borderRadius: theme.shape.borderRadius,
-                transition: 'box-shadow 150ms ease-out, transform 150ms ease-out',
+                transition:
+                    'box-shadow 150ms ease-out, transform 150ms ease-out',
                 '&:hover': { boxShadow: theme.shadows[4] },
             }}
         >
@@ -100,11 +134,25 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
                     variant="rectangular"
                     width={size.width}
                     height={size.height}
-                    sx={{ position: 'absolute', inset: 0, zIndex: 1, borderRadius: theme.shape.borderRadius }}
+                    sx={{
+                        position: 'absolute',
+                        inset: 0,
+                        zIndex: 1,
+                        borderRadius: theme.shape.borderRadius,
+                    }}
                 />
             )}
             {hasError ? (
-                <Box sx={{ height: size.height, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: theme.palette.action.hover, p: 2 }}>
+                <Box
+                    sx={{
+                        height: size.height,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bgcolor: theme.palette.action.hover,
+                        p: 2,
+                    }}
+                >
                     <Typography variant="body2" color="text.secondary">
                         Street View unavailable for this address
                     </Typography>
@@ -120,13 +168,25 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
                 />
             )}
 
-            <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 0.5 }}>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    display: 'flex',
+                    gap: 0.5,
+                }}
+            >
                 <IconButton
                     size="small"
                     onClick={handleRefresh}
                     sx={{
                         bgcolor: 'rgba(255,255,255,0.9)',
-                        '&:hover': { bgcolor: theme.palette.primary.main, color: theme.palette.primary.contrastText, transform: 'scale(1.05)' },
+                        '&:hover': {
+                            bgcolor: theme.palette.primary.main,
+                            color: theme.palette.primary.contrastText,
+                            transform: 'scale(1.05)',
+                        },
                     }}
                 >
                     <RefreshIcon fontSize="small" />
@@ -136,7 +196,11 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
                     onClick={handleFullscreen}
                     sx={{
                         bgcolor: 'rgba(255,255,255,0.9)',
-                        '&:hover': { bgcolor: theme.palette.secondary.main, color: theme.palette.secondary.contrastText, transform: 'scale(1.05)' },
+                        '&:hover': {
+                            bgcolor: theme.palette.secondary.main,
+                            color: theme.palette.secondary.contrastText,
+                            transform: 'scale(1.05)',
+                        },
                     }}
                 >
                     <FullscreenIcon fontSize="small" />
@@ -147,5 +211,3 @@ const StreetViewImage: React.FC<StreetViewImageProps> = ({
 };
 
 export default StreetViewImage;
-
-

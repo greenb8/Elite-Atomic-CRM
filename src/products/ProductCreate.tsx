@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    Create,
-    SimpleForm,
-} from 'react-admin';
+import { Create, SimpleForm } from 'react-admin';
 import ProductInputs from './ProductInputs';
 
 const ProductCreate = () => (

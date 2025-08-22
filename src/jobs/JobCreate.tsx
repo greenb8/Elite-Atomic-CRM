@@ -22,14 +22,9 @@ export default function JobCreate() {
 
     return (
         <Create>
-            <SimpleForm 
-                defaultValues={initialValues}
-                onSuccess={onSuccess}
-            >
+            <SimpleForm defaultValues={initialValues} onSuccess={onSuccess}>
                 <JobInputs />
             </SimpleForm>
         </Create>
     );
 }
-
-

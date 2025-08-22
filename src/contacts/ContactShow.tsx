@@ -1,5 +1,8 @@
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import {
+    Datagrid,
+    DateField,
+    NumberField,
     ReferenceField,
     ReferenceManyField,
     ShowBase,
@@ -9,10 +12,10 @@ import {
 
 import PlaceIcon from '@mui/icons-material/Place';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
+import StreetViewImage from '../misc/StreetViewImage';
 import { NotesIterator } from '../notes';
 import { Contact } from '../types';
 import { Avatar } from './Avatar';
-import StreetViewImage from '../misc/StreetViewImage';
 import { ContactAside } from './ContactAside';
 
 export const ContactShow = () => (
@@ -70,6 +73,59 @@ const ContactShowContent = () => {
                         >
                             <NotesIterator showStatus reference="contacts" />
                         </ReferenceManyField>
+
+                        {/* Associated Properties Section */}
+                        <Box mt={3}>
+                            <Typography variant="subtitle2" gutterBottom>
+                                Associated Properties
+                            </Typography>
+                            <ReferenceManyField
+                                reference="properties"
+                                target="contact_id"
+                                sort={{ field: 'created_at', order: 'DESC' }}
+                            >
+                                <Datagrid
+                                    rowClick="show"
+                                    bulkActionButtons={false}
+                                    size="small"
+                                >
+                                    <TextField source="name" />
+                                    <TextField source="address" />
+                                    <TextField source="city" />
+                                    <TextField source="state" />
+                                    <DateField source="created_at" />
+                                </Datagrid>
+                            </ReferenceManyField>
+                        </Box>
+
+                        {/* Associated Deals Section */}
+                        <Box mt={3}>
+                            <Typography variant="subtitle2" gutterBottom>
+                                Recent Deals
+                            </Typography>
+                            <ReferenceManyField
+                                reference="deals"
+                                target="contact_id"
+                                sort={{ field: 'created_at', order: 'DESC' }}
+                            >
+                                <Datagrid
+                                    rowClick="show"
+                                    bulkActionButtons={false}
+                                    size="small"
+                                >
+                                    <TextField source="name" />
+                                    <TextField source="stage" />
+                                    <NumberField
+                                        source="amount"
+                                        options={{
+                                            style: 'currency',
+                                            currency: 'USD',
+                                        }}
+                                    />
+                                    <DateField source="created_at" />
+                                </Datagrid>
+                            </ReferenceManyField>
+                        </Box>
                         <Box mt={2}>
                             <Typography variant="subtitle2" gutterBottom>
                                 Addresses
@@ -102,14 +158,21 @@ const ContactShowContent = () => {
                             )}
                             {record.service_address && (
                                 <Box mt={2}>
-                                    <Typography variant="subtitle2" gutterBottom>
+                                    <Typography
+                                        variant="subtitle2"
+                                        gutterBottom
+                                    >
                                         Service Location Street View
                                     </Typography>
                                     <StreetViewImage
-                                        address={record.service_address}
-                                        city={record.service_city}
-                                        state={record.service_state}
-                                        zipcode={record.service_zipcode}
+                                        address={record.service_address || ''}
+                                        city={record.service_city || undefined}
+                                        state={
+                                            record.service_state || undefined
+                                        }
+                                        zipcode={
+                                            record.service_zipcode || undefined
+                                        }
                                         size={{ width: 400, height: 250 }}
                                         fov={80}
                                     />

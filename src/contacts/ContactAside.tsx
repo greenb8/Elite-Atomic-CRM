@@ -23,10 +23,11 @@ import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
 import { TagsListEdit } from './TagsListEdit';
 
+import { ReactNode } from 'react';
 import { useLocation } from 'react-router';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Contact, Sale } from '../types';
-import { ReactNode } from 'react';
+import { ContactStats } from './ContactStats';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const location = useLocation();
@@ -98,6 +99,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 )}
                 optionValue="value"
             />
+            <ContactStats />
             <Typography variant="subtitle2" mt={2}>
                 Background info
             </Typography>

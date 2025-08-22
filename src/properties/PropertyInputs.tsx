@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
-import { 
-    AutocompleteInput, 
-    ImageField, 
-    ImageInput, 
-    ReferenceInput, 
-    TextInput 
+import {
+    AutocompleteInput,
+    ImageField,
+    ImageInput,
+    ReferenceInput,
+    TextInput,
 } from 'react-admin';
 
 export default function PropertyInputs() {
@@ -47,12 +47,20 @@ export default function PropertyInputs() {
                 <TextInput source="notes" fullWidth multiline rows={3} />
             </Grid>
             <Grid item xs={12}>
-                <ImageInput source="photos_paths" label="Property Photos" multiple>
+                <ImageInput
+                    source="photos_paths"
+                    label="Property Photos"
+                    multiple
+                >
                     <ImageField source="src" title="title" />
                 </ImageInput>
             </Grid>
             <Grid item xs={12}>
-                <ImageInput source="google_photos_paths" label="Google Photos" multiple>
+                <ImageInput
+                    source="google_photos_paths"
+                    label="Google Photos"
+                    multiple
+                >
                     <ImageField source="src" title="title" />
                 </ImageInput>
             </Grid>

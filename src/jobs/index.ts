@@ -10,5 +10,3 @@ export default {
     edit: JobEdit,
     show: JobShow,
 };
-
-

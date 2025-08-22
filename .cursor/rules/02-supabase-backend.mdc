@@ -6,6 +6,10 @@ alwaysApply: false
 
 This guide covers conventions for working on the Supabase backend for Atomic CRM.
 
+
+# Supabase MCP Server
+You have access to supabase mcp server and should use it.
+
 ## Database Migrations
 
 -   All database schema changes (tables, views, functions, triggers, policies) MUST be done via migration files in `supabase/migrations/`.

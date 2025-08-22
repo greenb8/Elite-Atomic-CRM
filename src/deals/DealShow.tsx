@@ -11,8 +11,11 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { format, isValid } from 'date-fns';
 import {
+    Datagrid,
+    DateField,
     DeleteButton,
     EditButton,
+    TextField as RaTextField,
     ReferenceArrayField,
     ReferenceField,
     ReferenceManyField,
@@ -247,6 +250,32 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
 
                         <Box m={2}>
                             <Divider />
+                            <Typography
+                                variant="caption"
+                                color="textSecondary"
+                                sx={{ display: 'block', mt: 1, mb: 1 }}
+                            >
+                                Related Jobs
+                            </Typography>
+                            <ReferenceManyField
+                                reference="jobs"
+                                target="deal_id"
+                                sort={{ field: 'scheduled_at', order: 'ASC' }}
+                            >
+                                <Datagrid
+                                    rowClick="show"
+                                    bulkActionButtons={false}
+                                >
+                                    <RaTextField source="status" />
+                                    <DateField source="scheduled_at" />
+                                    <ReferenceField
+                                        source="property_id"
+                                        reference="properties"
+                                        link="show"
+                                    />
+                                </Datagrid>
+                            </ReferenceManyField>
+                            <Divider sx={{ mt: 2 }} />
                             <ReferenceManyField
                                 target="deal_id"
                                 reference="dealNotes"

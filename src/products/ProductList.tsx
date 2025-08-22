@@ -48,7 +48,12 @@ const ProductList = () => {
                 </Box>
             }
             actions={
-                <Stack direction="row" alignItems="center" gap={1} sx={{ p: 1 }}>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    sx={{ p: 1 }}
+                >
                     <ToggleButtonGroup
                         value={view}
                         exclusive
@@ -71,8 +76,14 @@ const ProductList = () => {
                     <TextField source="vendor" />
                     <TextField source="size" />
                     <NumberField source="quantity_on_hand" label="In Stock" />
-                    <NumberField source="cost" options={{ style: 'currency', currency: 'USD' }} />
-                    <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
+                    <NumberField
+                        source="cost"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
+                    <NumberField
+                        source="price"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
                     <EditButton />
                 </Datagrid>
             ) : (

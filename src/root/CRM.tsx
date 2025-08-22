@@ -1,4 +1,9 @@
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import { deepmerge } from '@mui/utils';
+import { ForgotPasswordPage, SetPasswordPage } from 'ra-supabase';
 import { useEffect } from 'react';
+import type { AdminProps, AuthProvider, DataProvider } from 'react-admin';
 import {
     Admin,
     CustomRoutes,
@@ -8,29 +13,23 @@ import {
     defaultTheme,
     localStorageStore,
 } from 'react-admin';
-import type { AdminProps, AuthProvider, DataProvider } from 'react-admin';
-import { deepmerge } from '@mui/utils';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Route } from 'react-router';
-import { ForgotPasswordPage, SetPasswordPage } from 'ra-supabase';
 
-import { Layout } from '../layout/Layout';
-import { i18nProvider } from './i18nProvider';
 import companies from '../companies';
 import contacts from '../contacts';
 import { Dashboard } from '../dashboard/Dashboard';
 import deals from '../deals';
+import * as jobs from '../jobs';
+import { Layout } from '../layout/Layout';
 import { LoginPage } from '../login/LoginPage';
 import { SignupPage } from '../login/SignupPage';
+import * as products from '../products';
+import properties from '../properties';
 import {
     authProvider as defaultAuthProvider,
     dataProvider as defaultDataProvider,
 } from '../providers/supabase';
 import sales from '../sales';
-import * as products from '../products';
-import properties from '../properties';
-import * as jobs from '../jobs';
 import { SettingsPage } from '../settings/SettingsPage';
 import {
     ConfigurationContextValue,
@@ -47,6 +46,7 @@ import {
     defaultTaskTypes,
     defaultTitle,
 } from './defaultConfiguration';
+import { i18nProvider } from './i18nProvider';
 
 // Define the interface for the CRM component props
 export type CRMProps = {

@@ -28,7 +28,9 @@ export const DealCreate = ({ open }: { open: boolean }) => {
 
     const onSuccess = async (deal: Deal) => {
         // create line items if any
-        const items = (globalThis as any).__LINE_ITEMS_ITEMS__ as any[] | undefined;
+        const items = (globalThis as any).__LINE_ITEMS_ITEMS__ as
+            | any[]
+            | undefined;
         if (Array.isArray(items) && items.length > 0) {
             for (const it of items) {
                 await dataProvider.create('deal_line_items', {
