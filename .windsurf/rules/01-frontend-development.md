@@ -1,0 +1,80 @@
+---
+trigger: model_decision
+description: "Guidelines for developing frontend components and pages using React, React-Admin, and Material-UI."
+globs: src/**/*.tsx,src/**/*.ts
+---
+# Frontend Development Guidelines
+
+This document provides comprehensive guidance for working with the React, React-Admin, and Material-UI frontend for Elite-Atomic-CRM.
+
+## 1. Core Philosophy: React-Admin First
+
+The application is built on the [React-Admin](https://marmelab.com/react-admin/doc/5.8/Architecture.html) framework. It is not just a component library; it is a complete framework for CRUD applications that handles data fetching, state management, routing, and UI.
+
+-   **Prioritize Built-ins**: Before writing custom components or hooks, **always** look for a solution within React-Admin. Leverage its rich component library (`<List>`, `<Datagrid>`, `<Edit>`, `<Create>`, `<SimpleForm>`) and hooks (`useDataProvider`, `useNotify`, `useRedirect`). The goal is to focus on business logic, not boilerplate.
+-   **Key Libraries**: React-Admin is built on the shoulders of giants. Be aware of the underlying libraries it uses and leverage them when needed: `React Query` for data fetching, `react-hook-form` for forms, and `react-router` for routing.
+
+## 2. Domain-Specific Customization
+
+The primary method for tailoring the CRM to the landscaping domain is by passing props to the `<CRM>` component.
+
+-   **Central Configuration**: All domain-specific enumerations (e.g., job types, stages) are configured in a single location. Do not hard-code these values in components.
+-   **Reference File**: See the implementation in `@src/App.tsx`.
+-   **Example (`src/App.tsx`)**:
+    ```tsx
+    <CRM
+        // ... other props
+        dealStages={[
+            { value: 'inquiry', label: 'Inquiry' },
+            { value: 'estimate-sent', label: 'Estimate Sent' },
+            { value: 'job-won', label: 'Job Won' },
+            { value: 'in-progress', label: 'In Progress' },
+            { value: 'completed', label: 'Completed' },
+        ]}
+        taskTypes={[
+            'Site Visit',
+            'Client Call',
+            'Team Dispatch',
+            'Supply Order',
+        ]}
+    />
+    ```
+
+## 3. Component and Directory Structure
+
+Components are organized by feature (or "resource") under the `src/` directory.
+
+-   **Resource Directories**: Each resource (e.g., `src/contacts/`, `src/deals/`) contains all its related components.
+-   **Standard Views**: For a given resource, you will typically find the standard CRUD views:
+    -   `...List.tsx`: The main list/grid view.
+    -   `...Edit.tsx`: The form for editing a record.
+    -   `...Create.tsx`: The form for creating a new record.
+    -   `...Show.tsx`: The detailed read-only view.
+-   **Inputs**: Reusable form inputs for a resource are often consolidated in a file like `...Inputs.tsx`.
+
+## 4. Styling with Material-UI (MUI)
+
+All styling is handled by [Material-UI](https://mui.com/material-ui/all-components/). Do not introduce other styling libraries like Tailwind CSS.
+
+-   **`sx` Prop**: Use the `sx` prop for component-specific, one-off styles. It provides direct, theme-aware access to CSS properties.
+    ```tsx
+    <Box sx={{ mt: 2, backgroundColor: 'grey.200', p: 2 }}>
+      Content
+    </Box>
+    ```
+-   **`styled()` Utility**: For reusable, styled components, use MUI's `styled()` utility.
+-   **Theming**: For broader style changes, refer to the theming documentation. See `@doc/developer/theming.md`.
+
+## 5. Data Providers
+
+The data access layer is abstracted via React-Admin's Data Provider pattern. All communication with the backend must go through this layer.
+
+-   **Supabase Provider**: The primary data provider for production connects to our Supabase backend. All new data-fetching logic should be added here: `@src/providers/supabase/dataProvider.ts`.
+-   **Fakerest Provider**: For local development and testing, we use a fake data provider. This allows for offline work and predictable test data: `@src/providers/fakerest/dataProvider.ts`.
+
+## 6. Forms
+
+React-Admin uses `react-hook-form` internally for all forms.
+
+-   **Leverage Hooks**: For complex form logic (e.g., conditional fields, custom validation), use hooks from `react-hook-form` like `useWatch` and `useFormContext`.
+-   **Inputs**: When building custom form inputs, ensure they are compatible with React-Admin's `<...Input>` components and `react-hook-form`.

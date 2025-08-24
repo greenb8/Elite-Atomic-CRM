@@ -10,6 +10,10 @@ export const getDealsByStage = (
     if (!dealStages) return {};
     const dealsByStage: Record<Deal['stage'], Deal[]> = unorderedDeals.reduce(
         (acc, deal) => {
+            // Defensive programming: ensure the stage exists in the accumulator
+            if (!acc[deal.stage]) {
+                acc[deal.stage] = [];
+            }
             acc[deal.stage].push(deal);
             return acc;
         },
@@ -20,9 +24,11 @@ export const getDealsByStage = (
     );
     // order each column by index
     dealStages.forEach(stage => {
-        dealsByStage[stage.value] = dealsByStage[stage.value].sort(
-            (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
-        );
+        if (dealsByStage[stage.value]) {
+            dealsByStage[stage.value] = dealsByStage[stage.value].sort(
+                (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
+            );
+        }
     });
     return dealsByStage;
 };

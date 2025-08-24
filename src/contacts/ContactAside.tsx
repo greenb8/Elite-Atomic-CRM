@@ -1,7 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Box, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Divider, Stack, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
     ArrayField,
     DateField,
@@ -33,9 +33,20 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const location = useLocation();
     const { contactGender } = useConfigurationContext();
     const record = useRecordContext<Contact>();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    
     if (!record) return null;
+    
     return (
-        <Box ml={4} width={250} minWidth={250}>
+        <Box 
+            ml={isMobile ? 0 : 4} 
+            width={isMobile ? '100%' : 250} 
+            minWidth={isMobile ? 'auto' : 250}
+            sx={{
+                mt: { xs: 2, md: 0 }
+            }}
+        >
             <Box mb={2} ml="-5px">
                 {link === 'edit' ? (
                     <EditButton label="Edit Contact" />

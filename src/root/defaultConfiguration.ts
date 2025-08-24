@@ -63,3 +63,12 @@ export const defaultContactGender = [
     { value: 'female', label: 'She/Her', icon: Woman2Icon },
     { value: 'nonbinary', label: 'They/Them', icon: WcIcon },
 ];
+
+export const defaultServiceAddressTypes = [
+    { value: 'Primary Property', label: 'Primary Property' },
+    { value: 'Secondary Property', label: 'Secondary Property' },
+    { value: 'Commercial Site', label: 'Commercial Site' },
+    { value: 'Seasonal Property', label: 'Seasonal Property' },
+    { value: 'HOA Common Area', label: 'HOA Common Area' },
+    { value: 'Rental Property', label: 'Rental Property' },
+];

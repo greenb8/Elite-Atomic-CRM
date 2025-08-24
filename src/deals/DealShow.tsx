@@ -1,6 +1,8 @@
 import {
     Box,
     Button,
+    Card,
+    CardContent,
     Chip,
     Dialog,
     DialogContent,
@@ -10,6 +12,7 @@ import {
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { format, isValid } from 'date-fns';
+import { useState } from 'react';
 import {
     Datagrid,
     DateField,
@@ -30,13 +33,17 @@ import {
 
 import ArchiveIcon from '@mui/icons-material/Archive';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import DescriptionIcon from '@mui/icons-material/Description';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { NotesIterator } from '../notes';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Deal } from '../types';
 import { ContactList } from './ContactList';
+import { DealLineItems } from './DealLineItems';
 import { findDealLabel } from './deal';
+import { ProposalManagementSection } from './ProposalManagementSection';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -71,6 +78,8 @@ const CLOSE_TOP_WITH_ARCHIVED = 14;
 const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
     const { dealStages } = useConfigurationContext();
     const record = useRecordContext<Deal>();
+    const [isLineItemsOpen, setIsLineItemsOpen] = useState(false);
+
     if (!record) return null;
 
     return (
@@ -117,6 +126,14 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     <>
                                         <ArchiveButton record={record} />
                                         <EditButton scrollToTop={false} />
+                                        <Button
+                                            onClick={() =>
+                                                setIsLineItemsOpen(true)
+                                            }
+                                            size="small"
+                                        >
+                                            Manage Proposal
+                                        </Button>
                                         <CreateJobButton />
                                     </>
                                 )}
@@ -248,6 +265,8 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                             </Box>
                         )}
 
+                        <ProposalManagementSection />
+
                         <Box m={2}>
                             <Divider />
                             <Typography
@@ -287,6 +306,13 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                     </Box>
                 </Box>
             </Stack>
+            {isLineItemsOpen && (
+                <DealLineItems
+                    deal={record}
+                    open={isLineItemsOpen}
+                    onClose={() => setIsLineItemsOpen(false)}
+                />
+            )}
         </>
     );
 };
@@ -390,14 +416,7 @@ const CreateJobButton = () => {
     if (!isWon) return null;
 
     const handleClick = () => {
-        redirect('/jobs/create', {
-            state: {
-                record: {
-                    deal_id: record.id,
-                    property_id: (record as any).property_id,
-                },
-            },
-        });
+        redirect('/jobs/create');
     };
 
     return (

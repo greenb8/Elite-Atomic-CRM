@@ -1,5 +1,6 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import DescriptionIcon from '@mui/icons-material/Description';
 import { deepmerge } from '@mui/utils';
 import { ForgotPasswordPage, SetPasswordPage } from 'ra-supabase';
 import { useEffect } from 'react';
@@ -25,6 +26,8 @@ import { LoginPage } from '../login/LoginPage';
 import { SignupPage } from '../login/SignupPage';
 import * as products from '../products';
 import properties from '../properties';
+import proposals from '../proposals';
+import proposalTemplates from '../proposals/templates';
 import {
     authProvider as defaultAuthProvider,
     dataProvider as defaultDataProvider,
@@ -43,6 +46,7 @@ import {
     defaultDealStages,
     defaultLogo,
     defaultNoteStatuses,
+    defaultServiceAddressTypes,
     defaultTaskTypes,
     defaultTitle,
 } from './defaultConfiguration';
@@ -129,6 +133,7 @@ export const CRM = ({
     lightTheme = defaultLightTheme,
     logo = defaultLogo,
     noteStatuses = defaultNoteStatuses,
+    serviceAddressTypes = defaultServiceAddressTypes,
     taskTypes = defaultTaskTypes,
     title = defaultTitle,
     dataProvider = defaultDataProvider,
@@ -159,6 +164,7 @@ export const CRM = ({
             dealStages={dealStages}
             logo={logo}
             noteStatuses={noteStatuses}
+            serviceAddressTypes={serviceAddressTypes}
             taskTypes={taskTypes}
             title={title}
         >
@@ -205,6 +211,9 @@ export const CRM = ({
                 <Resource name="products" {...products} icon={InventoryIcon} />
                 <Resource name="deal_line_items" list={ListGuesser} />
                 <Resource name="properties" {...properties} />
+                <Resource name="proposals" {...proposals} icon={DescriptionIcon} />
+                <Resource name="proposal_templates" {...proposalTemplates} />
+                <Resource name="proposal_line_items" list={ListGuesser} />
                 <Resource name="jobs" {...jobs} icon={CalendarMonthIcon} />
             </Admin>
         </ConfigurationProvider>

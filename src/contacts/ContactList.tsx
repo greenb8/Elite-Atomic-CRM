@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Card, Stack } from '@mui/material';
+import { Card, Stack, useMediaQuery, useTheme } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import type { Exporter } from 'react-admin';
 import {
@@ -44,6 +44,8 @@ export const ContactList = () => {
 const ContactListLayout = () => {
     const { data, isPending, filterValues } = useListContext();
     const { identity } = useGetIdentity();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
@@ -52,19 +54,29 @@ const ContactListLayout = () => {
     if (!data?.length && !hasFilters) return <ContactEmpty />;
 
     return (
-        <Stack direction="row">
-            <ContactListFilter />
-            <Stack sx={{ width: '100%' }}>
+        <Stack 
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={{ xs: 2, md: 0 }}
+            sx={{ 
+                width: '100%',
+                px: { xs: 1, sm: 2, md: 0 }
+            }}
+        >
+            {!isMobile && <ContactListFilter />}
+            <Stack sx={{ width: '100%', flex: 1 }}>
                 <Title title={'Contacts'} />
                 <ListToolbar actions={<ContactListActions />} />
                 <BulkActionsToolbar>
                     <BulkExportButton />
                     <BulkDeleteButton />
                 </BulkActionsToolbar>
-                <Card>
+                <Card sx={{ mx: { xs: 0, sm: 1, md: 0 } }}>
                     <ContactListContent />
                 </Card>
-                <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
+                <Pagination 
+                    rowsPerPageOptions={isMobile ? [10, 25] : [10, 25, 50, 100]} 
+                    sx={{ mt: 2 }}
+                />
             </Stack>
         </Stack>
     );

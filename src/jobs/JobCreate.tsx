@@ -21,8 +21,8 @@ export default function JobCreate() {
     };
 
     return (
-        <Create>
-            <SimpleForm defaultValues={initialValues} onSuccess={onSuccess}>
+        <Create mutationOptions={{ onSuccess }}>
+            <SimpleForm defaultValues={initialValues}>
                 <JobInputs />
             </SimpleForm>
         </Create>

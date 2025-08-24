@@ -258,37 +258,91 @@ const saleOptionRenderer = (choice: Sale) =>
     `${choice.first_name} ${choice.last_name}`;
 
 const ContactAddressInputs = () => {
+    const { serviceAddressTypes } = useConfigurationContext();
+    
     return (
         <Stack>
             <Typography variant="h6">Addresses</Typography>
-            <Typography variant="subtitle2">Service address</Typography>
-            <AddressAutocompleteInput
-                source="service_address"
-                label="Address"
-                citySource="service_city"
-                stateSource="service_state"
-                zipSource="service_zipcode"
+            <ArrayInput
+                source="service_addresses_jsonb"
+                label="Service addresses"
                 helperText={false}
-            />
-            <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-                <TextInput
-                    source="service_city"
-                    label="City"
-                    helperText={false}
-                />
-                <TextInput
-                    source="service_state"
-                    label="State"
-                    helperText={false}
-                    sx={{ maxWidth: 120 }}
-                />
-                <TextInput
-                    source="service_zipcode"
-                    label="Zip code"
-                    helperText={false}
-                    sx={{ maxWidth: 160 }}
-                />
-            </Stack>
+            >
+                <SimpleFormIterator disableReordering>
+                    <Stack spacing={2} sx={{ width: '100%', minWidth: 600 }}>
+                        <AddressAutocompleteInput
+                            source="address"
+                            label="Address"
+                            citySource="city"
+                            stateSource="state"
+                            zipSource="zipcode"
+                            helperText={false}
+                        />
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                            <TextInput
+                                source="city"
+                                label="City"
+                                helperText={false}
+                                sx={{ flex: 2 }}
+                            />
+                            <TextInput
+                                source="state"
+                                label="State"
+                                helperText={false}
+                                sx={{ flex: 1, maxWidth: 120 }}
+                            />
+                            <TextInput
+                                source="zipcode"
+                                label="Zip code"
+                                helperText={false}
+                                sx={{ flex: 1, maxWidth: 140 }}
+                            />
+                        </Stack>
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                            <SelectInput
+                                source="type"
+                                label="Property Type"
+                                helperText={false}
+                                optionText="label"
+                                optionValue="value"
+                                choices={serviceAddressTypes}
+                                defaultValue="Primary Property"
+                                sx={{ flex: 1, minWidth: 180 }}
+                            />
+                            <TextInput
+                                source="gate_code"
+                                label="Gate Code"
+                                helperText={false}
+                                sx={{ flex: 1, maxWidth: 140 }}
+                            />
+                            <TextInput
+                                source="property_size"
+                                label="Property Size"
+                                helperText={false}
+                                sx={{ flex: 1, maxWidth: 140 }}
+                            />
+                        </Stack>
+                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                            <TextInput
+                                source="access_notes"
+                                label="Access Notes"
+                                helperText={false}
+                                multiline
+                                rows={2}
+                                sx={{ flex: 1 }}
+                            />
+                            <TextInput
+                                source="service_notes"
+                                label="Service Notes"
+                                helperText={false}
+                                multiline
+                                rows={2}
+                                sx={{ flex: 1 }}
+                            />
+                        </Stack>
+                    </Stack>
+                </SimpleFormIterator>
+            </ArrayInput>
             <Typography variant="subtitle2" mt={2}>
                 Billing address (if different)
             </Typography>

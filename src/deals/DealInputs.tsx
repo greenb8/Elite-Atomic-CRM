@@ -5,7 +5,6 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import { useEffect } from 'react';
 import {
     AutocompleteArrayInput,
     AutocompleteInput,
@@ -20,37 +19,19 @@ import {
     useGetIdentity,
     useNotify,
 } from 'react-admin';
-import { useFormContext } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { contactInputText, contactOptionText } from '../misc/ContactOption';
 import { useConfigurationContext } from '../root/ConfigurationContext';
-import { LineItemsInput } from './LineItemsInput';
 
 const validateRequired = required();
 
 export const DealInputs = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const form = useFormContext();
-
-    useEffect(() => {
-        const id = setInterval(() => {
-            const total = (globalThis as any).__LINE_ITEMS_TOTAL__ as
-                | number
-                | undefined;
-            if (typeof total === 'number') {
-                form.setValue('amount', total, {
-                    shouldDirty: true,
-                    shouldValidate: true,
-                });
-            }
-        }, 300);
-        return () => clearInterval(id);
-    }, [form]);
 
     return (
         <Stack gap={4} p={1}>
             <DealInfoInputs />
-            <LineItemsInput />
             <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
                 <DealLinkedToInputs />
                 <Divider
@@ -86,6 +67,7 @@ const DealLinkedToInputs = () => {
     const [create] = useCreate();
     const notify = useNotify();
     const { identity } = useGetIdentity();
+    const contactIds = useWatch({ name: 'contact_ids' });
 
     const handleCreateCompany = async (name?: string) => {
         if (!name) return;
@@ -115,7 +97,6 @@ const DealLinkedToInputs = () => {
                 <AutocompleteInput
                     optionText="name"
                     onCreate={handleCreateCompany}
-                    validate={validateRequired}
                     helperText={false}
                 />
             </ReferenceInput>
@@ -132,7 +113,12 @@ const DealLinkedToInputs = () => {
                 />
             </ReferenceArrayInput>
 
-            <ReferenceInput source="property_id" reference="properties">
+            <ReferenceInput
+                source="property_id"
+                reference="properties"
+                filter={{ contact_id: contactIds }}
+                disabled={!contactIds || contactIds.length === 0}
+            >
                 <AutocompleteInput
                     optionText="name"
                     label="Property"

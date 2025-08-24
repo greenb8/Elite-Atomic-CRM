@@ -1,0 +1,22 @@
+---
+trigger: model_decision
+description: "Guidelines for writing unit and integration tests using Vitest and React Testing Library."
+globs:
+---
+# Testing Guidelines
+
+This document outlines how to write tests for Atomic CRM.
+
+## Frameworks
+
+-   **Test Runner**: Vitest (`vitest`).
+-   **Assertion Library**: Jest-style `expect` via Vitest.
+-   **Component Testing**: React Testing Library (`@testing-library/react`).
+
+## Best Practices
+
+-   Test files should be co-located with the source files they are testing and named with a `.spec.tsx` or `.spec.ts` extension.
+-   Focus on testing user behavior rather than implementation details. Use `screen` queries from React Testing Library to find elements as a user would.
+-   Mock dependencies like data providers and API calls to isolate components during unit tests.
+-   Ensure tests are readable and well-structured, using `describe` and `it` blocks to group related tests.
+-   Run tests with `npm test`.

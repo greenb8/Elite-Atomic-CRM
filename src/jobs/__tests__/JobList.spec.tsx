@@ -2,6 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { AdminContext } from 'react-admin';
 import { testDataProvider } from 'ra-core';
+import { vi } from 'vitest';
 import { i18nProvider } from '../../root/i18nProvider';
 import JobList from '../JobList';
 

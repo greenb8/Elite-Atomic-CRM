@@ -11,6 +11,7 @@ import {
     useListContext,
     useRedirect,
 } from 'react-admin';
+import { useLocation } from 'react-router-dom';
 import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
@@ -19,6 +20,10 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
     const { data: allDeals } = useListContext<Deal>();
+    const location = useLocation();
+    const search = new URLSearchParams(location.search);
+    const contactIdParam = search.get('contactId');
+    const initialContactIds = contactIdParam ? [Number(contactIdParam)] : [];
 
     const handleClose = () => {
         redirect('/deals');
@@ -27,27 +32,6 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const queryClient = useQueryClient();
 
     const onSuccess = async (deal: Deal) => {
-        // create line items if any
-        const items = (globalThis as any).__LINE_ITEMS_ITEMS__ as
-            | any[]
-            | undefined;
-        if (Array.isArray(items) && items.length > 0) {
-            for (const it of items) {
-                await dataProvider.create('deal_line_items', {
-                    data: {
-                        deal_id: deal.id,
-                        product_id: it.product_id ?? null,
-                        name: it.name,
-                        description: it.description ?? null,
-                        sku: it.sku ?? null,
-                        price: it.price,
-                        cost: it.cost ?? null,
-                        quantity: it.quantity,
-                    },
-                });
-            }
-        }
-
         if (!allDeals) {
             redirect('/deals');
             return;
@@ -107,7 +91,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                 <Form
                     defaultValues={{
                         sales_id: identity?.id,
-                        contact_ids: [],
+                        contact_ids: initialContactIds,
                         index: 0,
                     }}
                 >

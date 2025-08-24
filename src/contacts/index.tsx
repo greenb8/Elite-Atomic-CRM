@@ -5,6 +5,12 @@ import { ContactEdit } from './ContactEdit';
 import { ContactCreate } from './ContactCreate';
 import { Contact } from '../types';
 
+// Export new components for external use
+export { ContactBusinessInsights } from './ContactBusinessInsights';
+export { PropertyManagementSection } from './PropertyManagementSection';
+export { QuickActionsPanel } from './QuickActionsPanel';
+export { CommunicationTimeline } from './CommunicationTimeline';
+
 export default {
     list: ContactList,
     show: ContactShow,

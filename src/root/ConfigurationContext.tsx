@@ -7,10 +7,11 @@ import {
     defaultDealStages,
     defaultLogo,
     defaultNoteStatuses,
+    defaultServiceAddressTypes,
     defaultTaskTypes,
     defaultTitle,
 } from './defaultConfiguration';
-import { ContactGender, DealStage, NoteStatus } from '../types';
+import { ContactGender, DealStage, NoteStatus, ServiceAddressType } from '../types';
 
 // Define types for the context value
 export interface ConfigurationContextValue {
@@ -23,6 +24,7 @@ export interface ConfigurationContextValue {
     title: string;
     logo: string;
     contactGender: ContactGender[];
+    serviceAddressTypes: ServiceAddressType[];
 }
 
 export interface ConfigurationProviderProps extends ConfigurationContextValue {
@@ -40,6 +42,7 @@ export const ConfigurationContext = createContext<ConfigurationContextValue>({
     title: defaultTitle,
     logo: defaultLogo,
     contactGender: defaultContactGender,
+    serviceAddressTypes: defaultServiceAddressTypes,
 });
 
 export const ConfigurationProvider = ({
@@ -53,6 +56,7 @@ export const ConfigurationProvider = ({
     taskTypes,
     title,
     contactGender,
+    serviceAddressTypes,
 }: ConfigurationProviderProps) => (
     <ConfigurationContext.Provider
         value={{
@@ -65,6 +69,7 @@ export const ConfigurationProvider = ({
             title,
             taskTypes,
             contactGender,
+            serviceAddressTypes,
         }}
     >
         {children}
