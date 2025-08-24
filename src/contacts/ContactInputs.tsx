@@ -24,7 +24,6 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import { AddressAutocompleteInput } from '../misc/AddressAutocompleteInput';
-import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
 import { Avatar } from './Avatar';
@@ -212,12 +211,6 @@ const ContactPersonalInformationInputs = () => {
                     />
                 </SimpleFormIterator>
             </ArrayInput>
-            <TextInput
-                source="linkedin_url"
-                label="Linkedin URL"
-                helperText={false}
-                validate={isLinkedinUrl}
-            />
         </Stack>
     );
 };
@@ -259,7 +252,7 @@ const saleOptionRenderer = (choice: Sale) =>
 
 const ContactAddressInputs = () => {
     const { serviceAddressTypes } = useConfigurationContext();
-    
+
     return (
         <Stack>
             <Typography variant="h6">Addresses</Typography>
@@ -278,7 +271,10 @@ const ContactAddressInputs = () => {
                             zipSource="zipcode"
                             helperText={false}
                         />
-                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                        <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            spacing={2}
+                        >
                             <TextInput
                                 source="city"
                                 label="City"
@@ -298,7 +294,10 @@ const ContactAddressInputs = () => {
                                 sx={{ flex: 1, maxWidth: 140 }}
                             />
                         </Stack>
-                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                        <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            spacing={2}
+                        >
                             <SelectInput
                                 source="type"
                                 label="Property Type"
@@ -322,7 +321,10 @@ const ContactAddressInputs = () => {
                                 sx={{ flex: 1, maxWidth: 140 }}
                             />
                         </Stack>
-                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                        <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            spacing={2}
+                        >
                             <TextInput
                                 source="access_notes"
                                 label="Access Notes"
